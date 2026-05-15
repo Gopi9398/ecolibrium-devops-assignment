@@ -30,7 +30,7 @@ pipeline {
                     script {
 
                         env.ACCOUNT_ID = sh(
-                            script: "aws sts get-caller-identity --query Account --output text",
+                            script: 'aws sts get-caller-identity --query Account --output text',
                             returnStdout: true
                         ).trim()
 
@@ -70,7 +70,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 dir('app') {
-                    sh 'docker build -t ${IMAGE_NAME} .'
+                    sh "docker build -t ${params.IMAGE_NAME} ."
                 }
             }
         }
@@ -82,25 +82,25 @@ pipeline {
                     credentialsId: 'aws-creds'
                 ]]) {
 
-                    sh '''
-                    aws ecr get-login-password --region ${AWS_REGION} | \
+                    sh """
+                    aws ecr get-login-password --region ${params.AWS_REGION} | \
                     docker login \
                     --username AWS \
-                    --password-stdin ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-                    '''
+                    --password-stdin ${env.ACCOUNT_ID}.dkr.ecr.${params.AWS_REGION}.amazonaws.com
+                    """
                 }
             }
         }
 
         stage('Docker Tag') {
             steps {
-                sh 'docker tag ${IMAGE_NAME}:latest ${ECR_REPO}:latest'
+                sh "docker tag ${params.IMAGE_NAME}:latest ${env.ECR_REPO}:latest"
             }
         }
 
         stage('Docker Push') {
             steps {
-                sh 'docker push ${ECR_REPO}:latest'
+                sh "docker push ${env.ECR_REPO}:latest"
             }
         }
 
@@ -111,11 +111,11 @@ pipeline {
                     credentialsId: 'aws-creds'
                 ]]) {
 
-                    sh '''
+                    sh """
                     aws eks update-kubeconfig \
-                    --region ${AWS_REGION} \
-                    --name ${CLUSTER_NAME}
-                    '''
+                    --region ${params.AWS_REGION} \
+                    --name ${params.CLUSTER_NAME}
+                    """
                 }
             }
         }

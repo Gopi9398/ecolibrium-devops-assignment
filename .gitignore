@@ -9,9 +9,6 @@ override.tf.json
 *_override.tf.json
 .terraform.lock.hcl
 
-# Terraform variable secrets
-*.tfvars
-!terraform.tfvars.example
 
 # Sensitive files
 *.pem

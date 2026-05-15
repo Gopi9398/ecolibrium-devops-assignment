@@ -1,3 +1,6 @@
+
+### This file contains the variable definitions for the Terraform configuration. Each variable has a description and a type, and values are assigned here. The variables are used to parameterize the Terraform code, allowing for flexibility and reusability.###
+
 region = "ap-south-2"
 vpc_cidr = "10.0.0.0/16"
 public_subnet_1_cidr = "10.0.1.0/24"
