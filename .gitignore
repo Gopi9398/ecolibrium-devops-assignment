@@ -1,0 +1,31 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+
+# Terraform variable secrets
+*.tfvars
+!terraform.tfvars.example
+
+# Sensitive files
+*.pem
+*.key
+
+# Jenkins
+.jenkins/
+
+# Kubernetes
+kubeconfig
+.kube/
+
+# Helm
+*.tgz
+
+# Environment files
+.env
