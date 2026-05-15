@@ -1,3 +1,6 @@
+def ACCOUNT_ID = ""
+def ECR_REPO = ""
+
 pipeline {
     agent any
 
@@ -5,11 +8,6 @@ pipeline {
         string(name: 'AWS_REGION', defaultValue: 'ap-south-2', description: 'AWS Region')
         string(name: 'IMAGE_NAME', defaultValue: 'demo-app', description: 'Docker Image Name')
         string(name: 'CLUSTER_NAME', defaultValue: 'demo-eks-cluster', description: 'EKS Cluster Name')
-    }
-
-    environment {
-        ACCOUNT_ID = ''
-        ECR_REPO = ''
     }
 
     stages {
@@ -29,15 +27,15 @@ pipeline {
 
                     script {
 
-                        env.ACCOUNT_ID = sh(
+                        ACCOUNT_ID = sh(
                             script: 'aws sts get-caller-identity --query Account --output text',
                             returnStdout: true
                         ).trim()
 
-                        env.ECR_REPO = "${env.ACCOUNT_ID}.dkr.ecr.${params.AWS_REGION}.amazonaws.com/${params.IMAGE_NAME}"
+                        ECR_REPO = "${ACCOUNT_ID}.dkr.ecr.${params.AWS_REGION}.amazonaws.com/${params.IMAGE_NAME}"
 
-                        echo "AWS Account ID: ${env.ACCOUNT_ID}"
-                        echo "ECR Repository: ${env.ECR_REPO}"
+                        echo "AWS Account ID: ${ACCOUNT_ID}"
+                        echo "ECR Repository: ${ECR_REPO}"
                     }
 
                     sh 'aws sts get-caller-identity'
@@ -86,7 +84,7 @@ pipeline {
                     aws ecr get-login-password --region ${params.AWS_REGION} | \
                     docker login \
                     --username AWS \
-                    --password-stdin ${env.ACCOUNT_ID}.dkr.ecr.${params.AWS_REGION}.amazonaws.com
+                    --password-stdin ${ACCOUNT_ID}.dkr.ecr.${params.AWS_REGION}.amazonaws.com
                     """
                 }
             }
@@ -94,13 +92,13 @@ pipeline {
 
         stage('Docker Tag') {
             steps {
-                sh "docker tag ${params.IMAGE_NAME}:latest ${env.ECR_REPO}:latest"
+                sh "docker tag ${params.IMAGE_NAME}:latest ${ECR_REPO}:latest"
             }
         }
 
         stage('Docker Push') {
             steps {
-                sh "docker push ${env.ECR_REPO}:latest"
+                sh "docker push ${ECR_REPO}:latest"
             }
         }
 
