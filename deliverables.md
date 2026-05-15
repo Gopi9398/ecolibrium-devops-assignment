@@ -1,3 +1,10 @@
+# DevOps Assignment Deliverables
+
+# GitHub Repository
+Repository link:
+https://github.com/Gopi9398/ecolibrium-devops-assignment.git
+
+
 aws eks cluster
 
 <img width="1815" height="821" alt="eks-cluster" src="https://github.com/user-attachments/assets/e24e8f2c-bd00-4307-9914-d8d7d91b19af" />
@@ -17,6 +24,12 @@ deployement
 Application validation output
 
 <img width="1578" height="1056" alt="Screenshot 2026-05-15 143110" src="https://github.com/user-attachments/assets/1eb86679-12c7-4232-a135-d830829f2e5a" />
+
+
+pipeline-deployment
+
+<img width="1851" height="832" alt="pipeline-deployment" src="https://github.com/user-attachments/assets/e2cc37b9-2d1d-4cc6-a1fc-b47a59166276" />
+
 
 
 Jenkins pipeline output
